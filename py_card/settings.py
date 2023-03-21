@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "py_card.custom_auth",
+    "py_card.core",
 ]
 
 MIDDLEWARE = [
