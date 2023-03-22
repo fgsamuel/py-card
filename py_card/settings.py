@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "encrypted_model_fields",
     "rest_framework",
     "rest_framework_simplejwt",
+    "drf_spectacular",
     "py_card.custom_auth",
     "py_card.core",
 ]
@@ -139,9 +140,17 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "PyCard API",
+    "DESCRIPTION": "Code challenge",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
