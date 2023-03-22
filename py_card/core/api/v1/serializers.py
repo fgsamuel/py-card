@@ -1,7 +1,5 @@
 import re
 
-from contextlib import suppress
-
 import creditcard
 
 from creditcard.exceptions import BrandNotFound
@@ -35,8 +33,16 @@ class CreditCardSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("The field must have a valid credit card number.")
         return value
 
-    def validade_brand(self, value):
-        cc = creditcard.CreditCard(value)
-        with suppress(BrandNotFound):
-            return cc.get_brand()
-        return ""
+    def validate(self, attrs):
+        try:
+            attrs["brand"] = creditcard.CreditCard(attrs["number"]).get_brand()
+        except BrandNotFound:
+            attrs["brand"] = ""
+
+        return attrs
+
+
+class CreditCardDetailSerializer(CreditCardSerializer):
+    class Meta:
+        model = CreditCard
+        fields = ["id", "number", "holder", "exp_date", "cvv", "brand"]

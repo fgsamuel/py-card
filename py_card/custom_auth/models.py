@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return self.first_name or self.email
 
 

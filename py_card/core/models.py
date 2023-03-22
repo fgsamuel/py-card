@@ -8,5 +8,5 @@ class CreditCard(models.Model):
     cvv = models.CharField(max_length=4, blank=True)
     brand = models.CharField(max_length=50, blank=True)
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return self.holder
