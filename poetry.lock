@@ -574,6 +574,22 @@ docs = ["sphinx", "sphinx-rtd-theme"]
 testing = ["Django", "django-configurations (>=2.0)"]
 
 [[package]]
+name = "python-creditcard"
+version = "0.0.1"
+description = "A simple credit cards validation library in Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = []
+develop = false
+
+[package.source]
+type = "git"
+url = "https://github.com/maistodos/python-creditcard.git"
+reference = "main"
+resolved_reference = "6b6bcc5d975985337c35e5c1a4f87d861bcac731"
+
+[[package]]
 name = "python-decouple"
 version = "3.8"
 description = "Strict separation of settings from code."
@@ -718,4 +734,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10"
-content-hash = "999b814c40ba79bf2cfe767afe41d48c32966e34662a6684fa2ab26af6e33190"
+content-hash = "ce619a0fb57b75c8f0a5455fa3c2f4e441085622bb83015636ded1909959bda0"

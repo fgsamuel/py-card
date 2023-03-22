@@ -1,5 +1,10 @@
 import re
 
+from contextlib import suppress
+
+import creditcard
+
+from creditcard.exceptions import BrandNotFound
 from rest_framework import serializers
 
 from py_card.core.api.v1.fields import MonthYearSerializerField
@@ -11,7 +16,7 @@ class CreditCardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CreditCard
-        fields = "__all__"
+        fields = ["id", "number", "holder", "exp_date", "cvv"]
 
     def validate_holder(self, value):
         if len(value) < 2:
@@ -23,3 +28,15 @@ class CreditCardSerializer(serializers.ModelSerializer):
         if not pattern.match(value):
             raise serializers.ValidationError("The field must have 3 or 4 digits.")
         return value
+
+    def validate_number(self, value):
+        cc = creditcard.CreditCard(value)
+        if not cc.is_valid():
+            raise serializers.ValidationError("The field must have a valid credit card number.")
+        return value
+
+    def validade_brand(self, value):
+        cc = creditcard.CreditCard(value)
+        with suppress(BrandNotFound):
+            return cc.get_brand()
+        return ""
