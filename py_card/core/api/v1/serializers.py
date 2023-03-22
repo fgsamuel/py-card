@@ -45,4 +45,4 @@ class CreditCardSerializer(serializers.ModelSerializer):
 class CreditCardDetailSerializer(CreditCardSerializer):
     class Meta:
         model = CreditCard
-        fields = ["id", "number", "holder", "exp_date", "cvv", "brand"]
+        fields = ["id", "number", "holder", "exp_date", "cvv", "brand", "created_at"]
