@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "encrypted_model_fields",
     "rest_framework",
     "py_card.custom_auth",
     "py_card.core",
@@ -125,3 +126,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+FIELD_ENCRYPTION_KEY = config("FIELD_ENCRYPTION_KEY")

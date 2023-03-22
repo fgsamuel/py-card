@@ -11,6 +11,7 @@ python-decouple = "^3.6"
 dj-database-url = "^1.0.0"
 django-rest-framework = "^0.1.0"
 python-creditcard = {git = "https://github.com/maistodos/python-creditcard.git", rev = "main"}
+django-encrypted-model-fields = "^0.6.5"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
