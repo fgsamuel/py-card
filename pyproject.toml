@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "py_card"
 version = "0.1.0"
-description = "Project to administrate beauty services"
+description = "Challenge for PyCard"
 authors = ["Samuel Gonçalves <fg.samuel@gmail.com>"]
 
 [tool.poetry.dependencies]
