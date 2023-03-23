@@ -15,8 +15,8 @@ class TestCreditCardEndpoint:
         }
 
     @pytest.mark.django_db
-    def test_create_credit_card(self, client, credit_card_data):
-        response = client.post("/api/v1/credit-card/", credit_card_data)
+    def test_create_credit_card(self, admin_client, credit_card_data):
+        response = admin_client.post("/api/v1/credit-card/", credit_card_data)
         assert response.status_code == 201
         assert response.data["number"] == credit_card_data["number"]
         assert response.data["holder"] == credit_card_data["holder"]
@@ -26,12 +26,12 @@ class TestCreditCardEndpoint:
         assert CreditCard.objects.count() == 1
 
     @pytest.mark.django_db
-    def test_list_credit_card(self, client, credit_card_data):
+    def test_list_credit_card(self, admin_client, credit_card_data):
         serializer = CreditCardSerializer(data=credit_card_data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        response = client.get("/api/v1/credit-card/")
+        response = admin_client.get("/api/v1/credit-card/")
 
         assert response.status_code == 200
         assert len(response.data) == 1
@@ -42,12 +42,12 @@ class TestCreditCardEndpoint:
         assert response.data[0]["brand"].lower() == "visa"
 
     @pytest.mark.django_db
-    def test_retrieve_credit_card(self, client, credit_card_data):
+    def test_retrieve_credit_card(self, admin_client, credit_card_data):
         serializer = CreditCardSerializer(data=credit_card_data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        response = client.get(f"/api/v1/credit-card/{serializer.instance.id}/")
+        response = admin_client.get(f"/api/v1/credit-card/{serializer.instance.id}/")
 
         assert response.status_code == 200
         assert response.data["number"] == credit_card_data["number"]
@@ -55,3 +55,15 @@ class TestCreditCardEndpoint:
         assert response.data["exp_date"] == credit_card_data["exp_date"]
         assert response.data["cvv"] == credit_card_data["cvv"]
         assert response.data["brand"].lower() == "visa"
+
+    @pytest.mark.django_db
+    def test_non_authenticated_user_with_obsfuscated_number(self, client, credit_card_data):
+        serializer = CreditCardSerializer(data=credit_card_data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        response = client.get(f"/api/v1/credit-card/{serializer.instance.id}/")
+
+        assert response.status_code == 200
+        assert response.data["number"] == "4539********1486"
+        assert response.data["cvv"] == "****"

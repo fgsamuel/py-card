@@ -13,28 +13,33 @@ class TestCreditCardSerializer:
             "cvv": "1234",
         }
 
+    @pytest.mark.django_db
     def test_valid_data(self, credit_card_data):
         serializer = CreditCardSerializer(data=credit_card_data)
         assert serializer.is_valid(raise_exception=True)
 
+    @pytest.mark.django_db
     def test_min_length_holder(self, credit_card_data):
         credit_card_data["holder"] = "A"
         serializer = CreditCardSerializer(data=credit_card_data)
         assert not serializer.is_valid()
         assert "holder" in serializer.errors
 
+    @pytest.mark.django_db
     def test_min_length_cvv(self, credit_card_data):
         credit_card_data["cvv"] = "12"
         serializer = CreditCardSerializer(data=credit_card_data)
         assert not serializer.is_valid()
         assert "cvv" in serializer.errors
 
+    @pytest.mark.django_db
     def test_max_length_cvv(self, credit_card_data):
         credit_card_data["cvv"] = "12345"
         serializer = CreditCardSerializer(data=credit_card_data)
         assert not serializer.is_valid()
         assert "cvv" in serializer.errors
 
+    @pytest.mark.django_db
     def test_invalid_number(self, credit_card_data):
         credit_card_data["number"] = "1111111111111111"
         serializer = CreditCardSerializer(data=credit_card_data)

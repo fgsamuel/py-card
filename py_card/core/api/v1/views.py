@@ -24,5 +24,5 @@ class CreditCardView(CreateModelMixin, RetrieveModelMixin, ListModelMixin, Gener
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        detail_serializer = CreditCardDetailSerializer(serializer.instance)
+        detail_serializer = CreditCardDetailSerializer(serializer.instance, context=self.get_serializer_context())
         return Response(detail_serializer.data, status=status.HTTP_201_CREATED, headers=headers)

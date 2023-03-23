@@ -7,6 +7,8 @@ from rest_framework import serializers
 
 from py_card.core.api.v1.fields import MonthYearSerializerField
 from py_card.core.models import CreditCard
+from py_card.core.services import obfuscate_credit_card_cvv
+from py_card.core.services import obfuscate_credit_card_number
 
 
 class CreditCardSerializer(serializers.ModelSerializer):
@@ -43,6 +45,21 @@ class CreditCardSerializer(serializers.ModelSerializer):
 
 
 class CreditCardDetailSerializer(CreditCardSerializer):
+    number = serializers.SerializerMethodField()
+    cvv = serializers.SerializerMethodField()
+
     class Meta:
         model = CreditCard
         fields = ["id", "number", "holder", "exp_date", "cvv", "brand", "created_at"]
+
+    def get_number(self, obj):
+        request = self.context.get("request")
+        if request and request.user.is_authenticated:
+            return obj.number
+        return obfuscate_credit_card_number(obj.number)
+
+    def get_cvv(self, obj):
+        request = self.context.get("request")
+        if request and request.user.is_authenticated:
+            return obj.cvv
+        return obfuscate_credit_card_cvv(obj.cvv)
